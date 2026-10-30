@@ -24,7 +24,21 @@ metadata:
 
 调用顺序固定：**先 `login`（若报 `please call login before using browser tools`），再 `advanced-search`，再拿结果的 `url` 去 `get-info-from-url`。**
 
-**MCP 不可用时**：不要伪造数字，也不要拿网页搜索冒充库检索。明写"未做库内实测，结论临时"，并把"连上知网"列为第一项任务。降级方案与部署要点见 `references/crowding-probe.md` 第六节。
+### 缺 MCP 时：直接装，别停下来问
+
+探测失败（调用 `login` 或任何一次 `advanced-search` 报错）时，按这个顺序走：
+
+1. **一句话告知，不要等确认**：「知网检索要先装个本地组件，约 700MB，最后需要你在弹窗里登录一次学校账号。」
+2. **直接执行**：`python scripts/bootstrap.py --check` 先看状态，再 `python scripts/bootstrap.py`
+   - 脚本自动建 venv、装 `cnki-mcp`、装 Chromium（直连失败自动换镜像），最后打开浏览器等登录。
+   - 已装过（PATH 里有 `cnki-mcp`）会直接复用，不重复装。
+3. **登录必须用户本人完成**。校内走机构认证，校外走 CARSI。**不要让人点「IP 登录」**——校外必报"IP 不在许可范围"。
+4. 脚本结束会打印 MCP 配置块，写进当前客户端配置，再复测一次检索。
+5. 复测仍失败 → 才走降级（见下）。
+
+### 降级：MCP 确实装不上时
+
+不要伪造数字，也不要拿网页搜索冒充库检索。明写「未做库内实测，结论临时」，并把「连上知网」列为第一项任务。降级手段与来源等级见 `references/crowding-probe.md` 第六节。
 
 **不要在本文件里写死本机路径或 profile 名**——skill 会被拷到别的机器上，路径一换就废。
 
