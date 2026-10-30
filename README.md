@@ -32,8 +32,23 @@
 
 ## 依赖
 
-第 3 步需要一个能查知网的 MCP，通常用 [cnki-mcp](https://github.com/sepinetam/cnki-mcp)。
-没有的话 skill 会降级，并明确标注"未验证"，不会编数字。
+第 3 步要查知网，需要一个 CNKI MCP（通常用 [cnki-mcp](https://github.com/sepinetam/cnki-mcp)）。
+
+**缺的话不用手动折腾**，一条命令：
+
+```bash
+python scripts/bootstrap.py --check   # 先看检测结果（只读，不装东西）
+python scripts/bootstrap.py           # 缺什么装什么
+```
+
+脚本会自动建 venv、装 `cnki-mcp`、装 Playwright Chromium（直连失败换镜像），
+最后弹出浏览器让你登录，结束时打印可直接粘贴的 MCP 配置块。
+已装过会复用，不重复下载。
+
+**唯一需要你动手的**：登录那一下。校内走机构认证，校外走 CARSI——
+**不要点「IP 登录」**，校外一定会报「IP 不在许可范围」。
+
+装不上也不会瞎编：skill 会明确标注「未验证」，并把「连上知网」列为第一项任务。
 
 ## 安装
 
